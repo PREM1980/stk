@@ -1,0 +1,15 @@
+delete from stocks.stocks_file;
+delete from stocks.stocks_data;
+
+select (52_week_high - closing_price) as diff, * from stocks.stocks_data
+where stock_id in 
+(
+select stock_id from
+(
+select stock_id, count(*) as cnt from stocks.stocks_data
+group by stock_id
+having cnt = 1
+order by cnt
+) x
+)
+order by report_dt
